@@ -12,7 +12,6 @@ func part1() {
 	if err != nil {
 		panic(err)
 	}
-	// var m map[string]int
 	scanner := bufio.NewScanner(file)
 	horizontal := 0
 	vertical := 0
@@ -37,7 +36,6 @@ func part2() {
 	if err != nil {
 		panic(err)
 	}
-	// var m map[string]int
 	scanner := bufio.NewScanner(file)
 	horizontal := 0
 	vertical := 0
