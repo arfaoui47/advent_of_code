@@ -89,6 +89,109 @@ func part1() {
 	fmt.Println(sum)
 }
 
+func part2() {
+	file, err := os.Open("2021/day5/input.txt")
+	if err != nil {
+		panic(err)
+	}
+	// store 1 counts
+	coordinates := make(coords, 0)
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		cords := strings.Split(line, " -> ")
+		start := strings.Split(cords[0], ",")
+		startX, _ := strconv.Atoi(start[1])
+		startY, _ := strconv.Atoi(start[0])
+		cord_start := point{startX, startY}
+		end := strings.Split(cords[1], ",")
+		endX, _ := strconv.Atoi(end[1])
+		endY, _ := strconv.Atoi(end[0])
+		cord_end := point{endX, endY}
+		if cord_start.x < cord_end.x && cord_start.y < cord_end.y {
+			for i := cord_start.x; i <= cord_end.x; i++ {
+				for j := cord_start.y; j <= cord_end.y; j++ {
+					if i == j {
+						coordinates = append(coordinates, coord{point{i, j}, point{i, j}})
+					}
+				}
+			}
+		} else if cord_start.x > cord_end.x && cord_start.y < cord_end.y {
+			for i := cord_start.x; i <= cord_end.x; i-- {
+				for j := cord_start.y; j <= cord_end.y; j++ {
+					if i+j == cord_start.x+cord_start.y {
+						coordinates = append(coordinates, coord{point{i, j}, point{i, j}})
+					}
+				}
+			}
+		} else if cord_start.x < cord_end.x && cord_start.y > cord_end.y {
+			for i := cord_start.x; i <= cord_end.x; i++ {
+				for j := cord_start.y; j >= cord_end.y; j-- {
+					if i+j == cord_start.x+cord_start.y {
+						coordinates = append(coordinates, coord{point{i, j}, point{i, j}})
+					}
+				}
+			}
+		} else if cord_start.x > cord_end.x && cord_start.y > cord_end.y {
+			for i := cord_start.x; i >= cord_end.x; i-- {
+				for j := cord_start.y; j >= cord_end.y; j-- {
+					if i == j {
+						coordinates = append(coordinates, coord{point{i, j}, point{i, j}})
+					}
+				}
+			}
+		}
+
+		coordinates = append(coordinates, coord{cord_start, cord_end})
+		fmt.Println(coordinates)
+	}
+	// grid := [1000][1000]int{}
+	grid := [10][10]int{}
+
+	for _, cord := range coordinates {
+		if (cord.start.x == cord.end.x) && (cord.start.y == cord.end.y) {
+			grid[cord.start.x][cord.start.y] += 1
+			continue
+		}
+
+		if cord.start.x == cord.end.x {
+			if cord.start.y < cord.end.y {
+				for j := cord.start.y; j <= cord.end.y; j++ {
+					grid[cord.end.x][j] += 1
+				}
+			} else {
+				for j := cord.end.y; j <= cord.start.y; j++ {
+					grid[cord.end.x][j] += 1
+				}
+			}
+		}
+		if cord.start.y == cord.end.y {
+			if cord.start.x < cord.end.x {
+				for i := cord.start.x; i <= cord.end.x; i++ {
+					grid[i][cord.end.y] += 1
+				}
+			} else {
+				for i := cord.end.x; i <= cord.start.x; i++ {
+					grid[i][cord.end.y] += 1
+				}
+			}
+		}
+	}
+	sum := 0
+
+	for _, row := range grid {
+		fmt.Println(row)
+		for _, v := range row {
+			if v > 1 {
+				sum++
+			}
+		}
+	}
+	fmt.Println(sum)
+}
+
 func main() {
-	part1()
+	// part1()
+	part2()
 }
