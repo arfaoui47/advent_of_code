@@ -14,7 +14,7 @@ func part1() {
 		panic(err)
 	}
 	scanner := bufio.NewScanner(file)
-	fishes := []int{}
+	fishes := []uint8{}
 	fishes_st := []string{}
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -24,9 +24,10 @@ func part1() {
 
 	for i := 0; i < len(fishes_st); i++ {
 		item, _ := strconv.Atoi(fishes_st[i])
-		fishes = append(fishes, item)
+		fish := uint8(item)
+		fishes = append(fishes, fish)
 	}
-	for j := 0; j <= 80; j++ {
+	for j := 0; j <= 256; j++ {
 		fmt.Println("day ", j, len(fishes))
 		for i := 0; i < len(fishes); i++ {
 
